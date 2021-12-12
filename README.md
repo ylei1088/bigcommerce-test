@@ -24,6 +24,7 @@ preview code: qtjhq0yzui
 ### Challenge 
 * study template theme code base.
 * using correct/proper naming convention
+* update style to match with overall website style
 
 
 
