@@ -1,6 +1,10 @@
 {
   "name": "Cornerstone",
+<<<<<<< HEAD
   "version": "6.2.0",
+=======
+  "version": "6.2.0-rc.1",
+>>>>>>> eda62d57849413320111e6231867179bcb40da93
   "template_engine": "handlebars_v4",
   "meta": {
     "price": 0,
