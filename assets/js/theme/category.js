@@ -10,6 +10,18 @@ export default class Category extends CatalogPage {
         this.validationDictionary = createTranslationDictionary(context);
     }
 
+    onShowProductSecondImage(e) {
+        const card = $(e.currentTarget).find('.card-image');
+        const image = card.attr('data-hoverimage');
+        card.attr('srcset', image);
+    }
+
+    onRemoveProductSecondImage(e) {
+        const card = $(e.currentTarget).find('.card-image');
+        const image = card.attr('data-src');
+        card.attr('srcset', image);
+    }
+
     setLiveRegionAttributes($element, roleType, ariaLiveStatus) {
         $element.attr({
             role: roleType,
@@ -28,6 +40,14 @@ export default class Category extends CatalogPage {
     }
 
     onReady() {
+        fetch('/api/storefront/cart', {
+            credentials: 'include',
+        }).then(response => response.json()).then(cartItems => {
+            if (cartItems.length === 0) {
+                $('#form-action-removeCart').parent().parent().hide();
+            }
+        });
+
         this.arrangeFocusOnSortBy();
 
         $('[data-button-type="add-cart"]').on('click', (e) => this.setLiveRegionAttributes($(e.currentTarget).next(), 'status', 'polite'));
@@ -45,7 +65,42 @@ export default class Category extends CatalogPage {
 
         $('a.reset-btn').on('click', () => this.setLiveRegionsAttributes($('span.reset-message'), 'status', 'polite'));
 
+        $('.card-figure').hover(
+            this.onShowProductSecondImage.bind(this),
+            this.onRemoveProductSecondImage.bind(this),
+        );
+
         this.ariaNotifyNoProducts();
+
+        $('#form-action-addToCart').click(event => {
+            const productIds = JSON.parse(event.target.dataset.products);
+            if (productIds && productIds.length > 0) {
+                Promise.all(productIds.map(productId => fetch(`/cart.php?action=add&product_id=${productId}`))).then((values) => {
+                    alert(`The product${values.length > 1 ? 's were' : ' was'} successfully added to your cart.`);
+                    window.location.reload();
+                }).catch((error) => {
+                    // eslint-disable-next-line no-console
+                    console.error(error);
+                });
+            }
+        });
+
+        $('#form-action-removeCart').click(() => {
+            fetch('/api/storefront/cart', {
+                credentials: 'include',
+            }).then(response => response.json()).then(cartItems => {
+                Promise.all(cartItems.map(item => fetch(`/api/storefront/carts/${item.id}`, {
+                    credentials: 'include',
+                    method: 'DELETE',
+                }))).then(() => {
+                    alert('All items in cart have been removed.');
+                    window.location.reload();
+                }).catch(error => {
+                    // eslint-disable-next-line no-console
+                    console.error(error);
+                });
+            });
+        });
     }
 
     ariaNotifyNoProducts() {

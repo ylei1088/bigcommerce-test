@@ -10,6 +10,11 @@
     {{/each}}
 </div>
 {{/if}}
+
+{{#if customer}}
+{{> components/custom/customer-info customer=customer}}
+{{/if}}
+
 <header class="header" role="banner">
     <a href="#" class="mobileMenu-toggle" data-mobile-menu-toggle="menu">
         <span class="mobileMenu-toggleIcon">Toggle menu</span>
@@ -29,5 +34,6 @@
         {{> components/common/navigation-menu}}
     </div>
 </header>
+
 {{{region name="header_bottom--global"}}}
 {{{region name="header_bottom"}}}

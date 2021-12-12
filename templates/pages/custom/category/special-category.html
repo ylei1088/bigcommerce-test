@@ -31,6 +31,10 @@ category:
     {{{region name="category_below_header"}}}
 {{/unless}}
 {{{category.description}}}
+<div>
+
+</div>
+
 <div class="page">
     {{#if category.faceted_search_enabled}}
         <aside class="page-sidebar" id="faceted-search-container">
@@ -49,13 +53,45 @@ category:
     {{/if}}
 
     <div class="page-content" id="product-listing-container">
-       
-        {{> components/category/product-listing}}
+
+        {{#if category.products}}
+        <div class="actions-bar">
+            {{> components/products/filter sort=pagination.category.sort products=category.products}}
+            {{> components/custom/add-to-cart-special products=category.products}}
+            {{> components/custom/remove-item-special products=category.products}}
+
+        </div>
+    
+        <form action="{{urls.compare}}" method='POST' {{#if settings.data_tag_enabled}} data-list-name="Category: {{category.name}}" {{/if}} data-product-compare>
+            {{#if theme_settings.product_list_display_mode '===' 'grid'}}
+                {{#if settings.data_tag_enabled}}
+                    {{> components/products/grid products=category.products show_compare=category.show_compare theme_settings=theme_settings event="list" }}
+                {{else}}
+                    {{> components/products/grid products=category.products show_compare=category.show_compare theme_settings=theme_settings}}
+                {{/if}}
+            {{else}}
+                {{#if settings.data_tag_enabled}}
+                    {{> components/products/list products=category.products show_compare=category.show_compare theme_settings=theme_settings event="list" }}
+                {{else}}
+                    {{> components/products/list products=category.products show_compare=category.show_compare theme_settings=theme_settings}}
+                {{/if}}
+            {{/if}}
+        </form>
+    
+        {{> components/common/paginator pagination.category}}
+    {{else}}
+        <p data-no-products-notification
+           role="alert"
+           aria-live="assertive"
+           tabindex="-1"
+        >
+            {{lang 'categories.no_products'}}
+        </p>
+    {{/if}}
+
         {{{region name="category_below_content"}}}
     </div>
 </div>
 
 {{/partial}}
 {{> layout/base}}
-
-

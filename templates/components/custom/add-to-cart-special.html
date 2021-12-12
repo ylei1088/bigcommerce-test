@@ -1,0 +1,11 @@
+<div class="add-to-cart-wrapper">
+        <div class="form-action">
+            <input
+                    id="form-action-addToCart"
+                    class="button button--primary"
+                    type="button"
+                    value="{{lang 'products.add_all_to_cart'}}"
+                    data-products="[{{#each products key="id" as |product|}} {{product.id}}{{#unless @last}},{{/unless}} {{/each}}]"
+            >
+        </div>
+</div>

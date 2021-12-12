@@ -6,7 +6,7 @@
     "footer": {
         "title": "Footer Start",
         "brands": "Popular Brands",
-        "navigate": "Navigate",
+        "navigate": "Site Nav",
         "info": "Info",
         "categories": "Categories",
         "call_us": "Call us at {phone_number}",
@@ -743,6 +743,8 @@
             "show": "Show Videos"
         },
         "add_to_cart": "Add to Cart",
+        "add_all_to_cart": "Add All To Cart",
+        "remove_special_item": "Remove Special Item",
         "adding_to_cart": "Adding to cart…",
         "options": "Options",
         "none": "None",
